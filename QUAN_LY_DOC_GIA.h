@@ -1,38 +1,38 @@
+#ifndef QUAN_LY_DOC_GIA
+#define QUAN_LY_DOC_GIA
+
 #pragma once
 
-#include<iostream>
-#include<string>
-#include<fstream>
-#include<iomanip>
-#include<conio.h>
+#include"DOC_GIA.h"
 
-#define DocGiaMAx 100
+#define QuanLyDocGiaMax 20
 
 using namespace std;
 
-struct ThongTinDocGia {
-	char MaDocGia[11] = "\0", HoTen[41] = "\0" , GioiTinh[11] = "\0",Email[51] = "\0", DiaChi[51] = "\0";
-	int NgaySinh, ThangSinh, NamSinh, NgayMuon, ThangMuon, NamMuon, NgayHet, ThangHet, NamHet;
+struct ThongTinQuanLyDocGia {
+	char MaSoQuanLyDocGia[11] = "\0", HoTen[41] = "\0", GioiTinh[11] = "\0", Email[51] = "\0", DiaChi[51] = "\0", MatKhau[21] = "\0";
+	int NgaySinh, ThangSinh, NamSinh, NgayGiaNhap, ThangGiaNhap, NamGiaNhap;
 };
 
-void NhapThongTinDocGia(ThongTinDocGia &tt);
+struct DanhSachQuanLyDocGia {
+	int n;
+	ThongTinQuanLyDocGia MangchuaQuanLyDocGia[QuanLyDocGiaMax];
 
-
-struct DanhSachDocGia {
-	int n= 0;
-	ThongTinDocGia MangChuaDocGia[DocGiaMAx];
 };
 
-void NhapDanhSachDocGia(DanhSachDocGia &DanhSach);
 
-void XuatDanhSachDocGia(DanhSachDocGia &DanhSach);
+int KiemTranMaKhauQuanLyDocGia(char* MK, DanhSachQuanLyDocGia DanhSach);
 
-
-void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach);
+void DocDuLieuVaoDSQLDG(DanhSachQuanLyDocGia &DanhSach);
 
 
-void LuuThongTinDocGiaVaoTepTin(ThongTinDocGia tt); 
+void XuatDanhSachDocGiaChuaDuocHichHoat(DanhSachDocGia DanhSach);
 
-int KiemTraMaSoDocGia(DanhSachDocGia DanhSach);
+void KichHoatMatKhauChoMotDG(DanhSachDocGia &DanhSach);
 
-void LuuDanhSachDocGiaVaoTepTin(DanhSachDocGia DanhSach);
+void KichHoatMatKhauChoToanBoDocGia(DanhSachDocGia &DanhSach);
+
+void XoaThongTinMotDocGia(DanhSachDocGia &DanhSach);
+
+
+#endif // !(QUAN_LY_DOC_GIA)

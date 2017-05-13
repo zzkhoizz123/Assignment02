@@ -1,83 +1,14 @@
 
-#include"QUAN_LY_DOC_GIA.h"
-
-//Nhap Thong tin Doc Gia
-
-void NhapThongTinDocGia(ThongTinDocGia &tt) {
-
-	cout << "Nhap ma so Doc Gia: " << endl;
-	cin.getline(tt.MaDocGia, 10);
-	cout << "Nhap ho ten Doc Gia: " << endl;
-	cin.getline(tt.HoTen,40 );
-	cout << "Nhap gioi tinh Doc Gia: " << endl;
-	cin.getline(tt.GioiTinh,10);
-	cout << "Nhap Email Doc Gia: " << endl;
-	cin.getline(tt.Email,50);
-	cout << "Nhap dia chi Doc Gia : " << endl;
-	cin.getline(tt.DiaChi, 50);
-}
+#include "QUAN_LY_DOC_GIA.h"
 
 
 
-void LuuThongTinDocGiaVaoTepTin(ThongTinDocGia tt) {
+void DocDuLieuVaoDSQLDG(DanhSachQuanLyDocGia &DanhSach) {
 
-	fstream File;
-	File.open("DanhSachDocGia.txt", ios::out | ios::app);
-	File << endl;
-	File << tt.MaDocGia	<< setw(10 - strlen(tt.MaDocGia))	<<  left << ";" 
-		 << tt.HoTen	<< setw(40 - strlen(tt.HoTen))		<<  left << ";" 
-		 << tt.GioiTinh << setw(10 - strlen(tt.GioiTinh))	<<  left << ";" 
-		 << tt.Email	<< setw(50 - strlen(tt.Email))		<<  left << ";"
-		 << tt.DiaChi	<< setw(50 - strlen(tt.DiaChi))		<<  left << ";" ;
-	
-	File.close();
-}
-
-void LuuDanhSachDocGiaVaoTepTin(DanhSachDocGia DanhSach) {
-
-	fstream File;
-	File.open("DanhSachDocGia.txt", ios::out);
-	for (int i = 0; i < DanhSach.n; i++) {
-		if (i != DanhSach.n - 1) {
-			File << DanhSach.MangChuaDocGia[i].MaDocGia << setw(10 - strlen(DanhSach.MangChuaDocGia[i].MaDocGia))	<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].HoTen	<< setw(40 - strlen(DanhSach.MangChuaDocGia[i].HoTen))		<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].GioiTinh << setw(10 - strlen(DanhSach.MangChuaDocGia[i].GioiTinh))	<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].Email	<< setw(50 - strlen(DanhSach.MangChuaDocGia[i].Email))		<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].DiaChi	<< setw(50 - strlen(DanhSach.MangChuaDocGia[i].DiaChi))		<< left << ";"
-				 << endl;
-		}
-		else {
-			File << DanhSach.MangChuaDocGia[i].MaDocGia << setw(10 - strlen(DanhSach.MangChuaDocGia[i].MaDocGia))	<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].HoTen	<< setw(40 - strlen(DanhSach.MangChuaDocGia[i].HoTen))		<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].GioiTinh << setw(10 - strlen(DanhSach.MangChuaDocGia[i].GioiTinh))	<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].Email	<< setw(50 - strlen(DanhSach.MangChuaDocGia[i].Email))		<< left << ";"
-				 << DanhSach.MangChuaDocGia[i].DiaChi	<< setw(50 - strlen(DanhSach.MangChuaDocGia[i].DiaChi))		<< left << ";";
-		}
-	}
-	File.close();
-}
-
-
-
-void NhapDanhSachDocGia(DanhSachDocGia &DanhSach) {
-	int n;
-	cout << "Nhap so luong doc gia can them vao." << endl;
-	cin >> n;
-	cin.ignore(INT_MAX, '\n');
-	for (int i = 0; i < n; i++) {
-		DanhSach.n++;
-		cout << "Nhap thong tin cua doc gia thu " << i + 1 << endl;
-		NhapThongTinDocGia(DanhSach.MangChuaDocGia[i]);
-		LuuThongTinDocGiaVaoTepTin(DanhSach.MangChuaDocGia[i]);
-	}
-}
-
-
-void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file vao Danh Sach doc gia
 	int k = 0;
 	string str, strsub;
 	fstream File;
-	File.open("DanhSachDocGia.txt", ios::in);
+	File.open("DanhSachQuanLyDocGia.txt", ios::in);
 
 	if (!File) {
 		cout << "Khong doc duoc file !!!" << endl;
@@ -85,6 +16,9 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 	else {
 		while (!File.eof()) {
 			getline(File, str);
+			if (str.empty()) {
+				break;
+			}
 
 			strsub = str.substr(0, 9);
 
@@ -93,7 +27,7 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 					break;
 				}
 				else {
-					DanhSach.MangChuaDocGia[k].MaDocGia[i] = strsub[i];
+					DanhSach.MangchuaQuanLyDocGia[k].MaSoQuanLyDocGia[i] = strsub[i];
 				}
 			}
 
@@ -103,7 +37,7 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 					break;
 				}
 				else {
-					DanhSach.MangChuaDocGia[k].HoTen[i] = strsub[i];
+					DanhSach.MangchuaQuanLyDocGia[k].HoTen[i] = strsub[i];
 				}
 			}
 
@@ -113,7 +47,7 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 					break;
 				}
 				else {
-					DanhSach.MangChuaDocGia[k].GioiTinh[i] = strsub[i];
+					DanhSach.MangchuaQuanLyDocGia[k].GioiTinh[i] = strsub[i];
 				}
 			}
 
@@ -123,7 +57,7 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 					break;
 				}
 				else {
-					DanhSach.MangChuaDocGia[k].Email[i] = strsub[i];
+					DanhSach.MangchuaQuanLyDocGia[k].Email[i] = strsub[i];
 				}
 			}
 
@@ -133,12 +67,20 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 					break;
 				}
 				else {
-					DanhSach.MangChuaDocGia[k].DiaChi[i] = strsub[i];
+					DanhSach.MangchuaQuanLyDocGia[k].DiaChi[i] = strsub[i];
 				}
 			}
 
-
-
+			strsub = str.substr(160, 179);
+			for (int i = 0; i < 20; i++) {
+				if (strsub[i] == ';') {
+					break;
+				}
+				else {
+					DanhSach.MangchuaQuanLyDocGia[k].MatKhau[i] = strsub[i];
+				}
+			}
+	
 			k++;
 			str.clear();
 
@@ -148,39 +90,87 @@ void DocDuLieuVaoDanhSach(DanhSachDocGia &DanhSach) { //Ham doc du lieu tu file 
 	File.close();
 }
 
-void XuatDanhSachDocGia(DanhSachDocGia &DanhSach) {
 
-	DocDuLieuVaoDanhSach(DanhSach);
-	cout << "---------------------------------------------DANH SACH DOC GIA----------------------------------------" << endl;
-	cout << "------------------------------------------------------------------------------------------------------" << endl;
-	cout << "| STT   Ma Doc Gia   Ho ten                    Gioi Tinh   Email                             Dia Chi |" << endl;
+
+
+int KiemTranMaKhauQuanLyDocGia(char* MK, DanhSachQuanLyDocGia DanhSach) {
+	int ret = -1;
 	for (int i = 0; i < DanhSach.n; i++) {
-		cout << "| " << setw(6) << left << i + 1	<< setw(13) << left		<< DanhSach.MangChuaDocGia[i].MaDocGia
-													<< setw(26) << left		<< DanhSach.MangChuaDocGia[i].HoTen
-													<< setw(12) << left		<< DanhSach.MangChuaDocGia[i].GioiTinh
-													<< setw(25) << left		<< DanhSach.MangChuaDocGia[i].Email 
-													<< setw(16) << right	<< DanhSach.MangChuaDocGia[i].DiaChi
-			<< " |" << endl;
-	}
-	cout << "------------------------------------------------------------------------------------------------------" << endl;
+		if (strcmp(MK, DanhSach.MangchuaQuanLyDocGia[i].MatKhau) == 0) {
+				ret = i;
+				break;
+			}
+		}
+	return ret;
+}
+	
 
+
+void XuatDanhSachDocGiaChuaDuocHichHoat(DanhSachDocGia DanhSach) {
+	
+			cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+			cout << "| STT   Ma Doc Gia   Ho ten                    Gioi Tinh   Email                    Dia Chi                       Sach Da Muon                            Ngay Sinh |" << endl;
+			for (int i = 0; i < DanhSach.n; i++) {
+				if (DanhSach.MangChuaDocGia[i].active == 0) {
+				cout << "| " << setw(6) << left << i + 1 << setw(13) << left << DanhSach.MangChuaDocGia[i].MaDocGia
+					<< setw(26) << left << DanhSach.MangChuaDocGia[i].HoTen
+					<< setw(12) << left << DanhSach.MangChuaDocGia[i].GioiTinh
+					<< setw(25) << left << DanhSach.MangChuaDocGia[i].Email
+					<< setw(30) << left << DanhSach.MangChuaDocGia[i].DiaChi
+					<< setw(40) << left << DanhSach.MangChuaDocGia[i].SachDaMuon
+					<< DanhSach.MangChuaDocGia[i].NgaySinh << "/" << DanhSach.MangChuaDocGia[i].ThangSinh << "/" << DanhSach.MangChuaDocGia[i].NamSinh
+					<< " |" << endl;
+				}
+			}
+			cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;			
 }
 
-int KiemTraMaSoDocGia(DanhSachDocGia DanhSach) {
-
-	int check = -1;
-	char q[10];
-	cout << "Nhap vao ma so can chinh sua." << endl;
-	cin.ignore(INT_MAX, '\n');
-	cin.getline(q, 10);
-
-	for (int i = 0; i < DanhSach.n; i++) {
-		if (strcmp(q, DanhSach.MangChuaDocGia[i].MaDocGia) == 0) {
-			check = i;
-			break;
-		}
-		
+void KichHoatMatKhauChoMotDG(DanhSachDocGia &DanhSach) {
+	int i = KiemTraMaSoDocGia(DanhSach);
+	if (i == -1) {
+		cout << "Khong tim thay !!!" << endl;
 	}
+	else {
+		DanhSach.MangChuaDocGia[i].active = 1;
+		LuuDanhSachDocGiaVaoTepTin(DanhSach);
+		cout << "Kich hoat thanh cong." << endl;
+	}	
+}
 
-	return check;
+void KichHoatMatKhauChoToanBoDocGia(DanhSachDocGia &DanhSach) {
+	for (int i = 0; i < DanhSach.n; i++) {
+		DanhSach.MangChuaDocGia[i].active = 1;
+	}
+	LuuDanhSachDocGiaVaoTepTin(DanhSach);
+}
+
+void XoaThongTinMotDocGia(DanhSachDocGia &DanhSach) {
+	int i = KiemTraMaSoDocGia(DanhSach);
+	if (i == -1) {
+		cout << "Khong tim thay !!!" << endl;
+	}
+	else {
+		DanhSach.n = DanhSach.n - 1;
+		for (int k = i; k < DanhSach.n; k++) {
+			strcpy_s(DanhSach.MangChuaDocGia[k].MaDocGia, DanhSach.MangChuaDocGia[k + 1].MaDocGia);
+			strcpy_s(DanhSach.MangChuaDocGia[k].HoTen, DanhSach.MangChuaDocGia[k + 1].HoTen);
+			strcpy_s(DanhSach.MangChuaDocGia[k].GioiTinh, DanhSach.MangChuaDocGia[k + 1].GioiTinh);
+			strcpy_s(DanhSach.MangChuaDocGia[k].Email, DanhSach.MangChuaDocGia[k + 1].Email);
+			strcpy_s(DanhSach.MangChuaDocGia[k].DiaChi, DanhSach.MangChuaDocGia[k + 1].DiaChi);
+			strcpy_s(DanhSach.MangChuaDocGia[k].MatKhau, DanhSach.MangChuaDocGia[k + 1].MatKhau);
+			strcpy_s(DanhSach.MangChuaDocGia[k].SachDaMuon, DanhSach.MangChuaDocGia[k + 1].SachDaMuon);
+			DanhSach.MangChuaDocGia[k].active = DanhSach.MangChuaDocGia[k + 1].active;
+			DanhSach.MangChuaDocGia[k].NgaySinh = DanhSach.MangChuaDocGia[k + 1].NgaySinh;
+			DanhSach.MangChuaDocGia[k].ThangSinh = DanhSach.MangChuaDocGia[k + 1].ThangSinh;
+			DanhSach.MangChuaDocGia[k].NamSinh = DanhSach.MangChuaDocGia[k + 1].NamSinh;
+			DanhSach.MangChuaDocGia[k].NgayMuon = DanhSach.MangChuaDocGia[k + 1].NgayMuon;
+			DanhSach.MangChuaDocGia[k].ThangMuon = DanhSach.MangChuaDocGia[k + 1].ThangMuon;
+			DanhSach.MangChuaDocGia[k].NamMuon = DanhSach.MangChuaDocGia[k + 1].NamMuon;
+			DanhSach.MangChuaDocGia[k].NgayHet = DanhSach.MangChuaDocGia[k + 1].NgayHet	;
+			DanhSach.MangChuaDocGia[k].ThangHet = DanhSach.MangChuaDocGia[k + 1].ThangHet;
+			DanhSach.MangChuaDocGia[k].NamHet = DanhSach.MangChuaDocGia[k + 1].NamHet;
+		}
+		LuuDanhSachDocGiaVaoTepTin(DanhSach);
+		cout << "Thanh cong." << endl;
+	}
 }
